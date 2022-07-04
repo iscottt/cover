@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章封面生成</title>
+    <script src="./html2canvas.min.js"></script>
+    <script src="./canvas2image.js"></script>
+    <style>
+      @font-face {
+        font-family: 'TITLE';
+        src: url('./fonts/YouSheBiaoTiHei.ttf');
+      }
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      .container {
+        width: 756px;
+        height: 426px;
+        background: url('./imgs/bg.jpeg') no-repeat center;
+        position: relative;
+      }
+      .logo {
+        width: 100%;
+        height: 300px;
+        text-align: right;
+        padding-right: 60px;
+        box-sizing: border-box;
+        position: absolute;
+      }
+      .logo img {
+        margin-top: 60px;
+        width: 160px;
+        height: 160px;
+      }
+      .title {
+        font-family: TITLE;
+        color: #fff;
+        font-size: 40px;
+        padding: 0 40px;
+        box-sizing: border-box;
+        margin: 140px 0 30px 0;
+      }
+      .title span:nth-of-type(2) {
+        font-size: 60px;
+      }
+      .tags {
+        width: 100%;
+        height: 200px;
+        padding: 0 40px 40px 40px;
+        box-sizing: border-box;
+      }
+      .tags .item {
+        padding: 2px 8px;
+        font-size: 14px;
+        background: #108ee9;
+        display: inline-block;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+      .tags .item:nth-of-type(2) {
+        background: #2db7f5;
+      }
+      .tags .item:nth-of-type(3) {
+        background: #87d068;
+      }
+      .form {
+        font-size: 14px;
+        padding: 20px;
+      }
+      .form-item {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+      }
+      .form-item .label {
+        width: 90px;
+        text-align: right;
+        margin-right: 10px;
+      }
+      .form-item input {
+        flex: 1;
+        box-sizing: border-box;
+        margin: 0;
+        display: inline-block;
+        width: 100%;
+        padding: 4px 11px;
+        color: #000000d9;
+        font-size: 14px;
+        line-height: 1.5715;
+        background-color: #fff;
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+        transition: all 0.3s;
+        outline: none;
+      }
+      .actions {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .submit-btn {
+        display: inline-block;
+        color: #fff;
+        border-radius: 5px;
+        background: #1890ff;
+        padding: 8px 16px;
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="download">
+      <div class="logo">
+        <img src="./imgs/logo.png" alt="" />
+      </div>
+      <div class="title">
+        <span id="con-topName">Pinia.js</span>
+        <br />
+        <span id="con-downName">入门指南</span>
+      </div>
+      <div class="tags" id="con-tags">
+        <span class="item">前端开发</span>
+        <span class="item">vue</span>
+        <span class="item">Vuex</span>
+      </div>
+    </div>
+    <div class="form">
+      <div class="form-item">
+        <div class="label">第一行标题：</div>
+        <input type="text" id="topName" />
+      </div>
+      <div class="form-item">
+        <div class="label">第二行标题：</div>
+        <input type="text" id="downName" />
+      </div>
+
+      <div class="form-item">
+        <div class="label">标签：</div>
+        <input type="text" id="tags" />
+      </div>
+
+      <div class="actions">
+        <div class="submit-btn" id="submit">提交</div>
+        <div class="submit-btn" id="capture">下载图片</div>
+      </div>
+    </div>
+    <script>
+      const topName = document.getElementById('topName');
+      const conTopName = document.getElementById('con-topName');
+      const downName = document.getElementById('downName');
+      const conDownName = document.getElementById('con-downName');
+      const oTags = document.getElementById('tags');
+      const oConTags = document.getElementById('con-tags');
+      const submit = document.getElementById('submit');
+      const oCapture = document.getElementById('capture');
+      submit.onclick = () => {
+        conTopName.innerHTML = topName.value;
+        conDownName.innerHTML = downName.value;
+        const tagsData = oTags.value.split(',');
+        let str = '';
+        for (let index = 0; index < tagsData.length; index++) {
+          str += `<span class="item">${tagsData[index]}</span>`;
+        }
+        oConTags.innerHTML = str;
+      };
+      oCapture.onclick = () => {
+        html2canvas(document.querySelector('#download'), { useCORS: true }).then((canvas) => {
+          // let imageURL = canvas.toDataURL('image/png'); //canvas转base64图片
+          const img = Canvas2Image.convertToImage(canvas, 756, 426, 'jpeg');
+          const a = document.createElement('a');
+          a.href = img.src;
+          a.download = `文章封面-${new Date().getTime()}`;
+          a.click();
+          console.log(img);
+        });
+      };
+    </script>
+  </body>
+</html>
