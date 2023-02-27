@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Generate</title>
+  <script src="./html2canvas.min.js"></script>
+  <script src="./canvas2image.js"></script>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* background: linear-gradient(150deg, #d299c2, #fef9d7); */
+      overflow: hidden;
+    }
+
+    @font-face {
+      font-family: 'Gruppo';
+      src: url('./fonts/Gruppo-Regular.ttf');
+    }
+
+    .container {
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: transparent;
+    }
+
+    .bubble {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 75% 30%, #fff 5px, #ff21c0 8px);
+      box-shadow: inset 0 0 20px #fff,
+        inset 10px 0 46px #eaf5fc,
+        inset 80px 0 60px #efcde6,
+        inset -20px -60px 100px #abcdef,
+        inset 0 50px 140px #f9f6de,
+        rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+      display: flex;
+      font-family: Gruppo;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 120px;
+      font-weight: bold;
+    }
+
+    #capture {
+      display: inline-block;
+      color: #fff;
+      border-radius: 5px;
+      background: #1890ff;
+      padding: 8px 16px;
+      margin-right: 20px;
+      border: none;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="bubble" id="download">
+      S
+    </div>
+    <img src="" id="show">
+  </div>
+
+
+  <script>
+    const oCapture = document.getElementById('capture');
+    const oShow = document.getElementById('show');
+    oCapture.onclick = () => {
+      html2canvas(document.querySelector('#download'), { useCORS: true }).then((canvas) => {
+        let imageURL = canvas.toDataURL('image/png'); //canvas转base64图片
+        show.src = imageURL
+        // const img = Canvas2Image.convertToImage(canvas, 128, 128, 'png');
+        // const a = document.createElement('a');
+        // a.href = img.src;
+        // a.download = `logo`;
+        // a.click();
+      });
+    };
+  </script>
+</body>
+
+</html>
